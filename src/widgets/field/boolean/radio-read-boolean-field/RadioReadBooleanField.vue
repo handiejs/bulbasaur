@@ -1,5 +1,5 @@
 <template>
-  <span>{{ displayText }}</span>
+  <span>{{ value ? positiveLabel : negativeLabel }}</span>
 </template>
 
 <script lang="ts" src="./logic.ts"></script>
