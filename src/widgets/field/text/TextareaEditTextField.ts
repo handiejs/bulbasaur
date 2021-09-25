@@ -20,32 +20,26 @@ export default class TextareaEditTextFieldWidget extends TextFieldHeadlessWidget
       showWordLimit = this.getBehavior('showWordLimit');
     }
 
-    const attrs: Record<string, any> = {
+    const props: Record<string, any> = {
+      value: this.value,
       placeholder: this.getPlaceholder(),
       rows: this.config.rows || this.getBehavior('rows'),
+      resize: 'none',
     };
 
     if (this.showValidationRulesAsNative) {
       const { min, max } = this.field as StringField;
 
       if (isNumber(min)) {
-        attrs.minlength = min;
+        props.minLength = min;
       }
 
       if (isNumber(max)) {
-        attrs.maxlength = max;
+        props.maxLength = max;
+        props.wordage = showWordLimit;
       }
     }
 
-    return h(getControl('Input'), {
-      props: {
-        type: 'textarea',
-        value: this.value,
-        resize: 'none',
-        showWordLimit,
-      },
-      attrs,
-      on: { input: this.onChange },
-    });
+    return h(getControl('TextArea'), { props, on: { input: this.onChange } });
   }
 }

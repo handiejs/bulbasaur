@@ -9,11 +9,11 @@ export default class RadioEditEnumFieldWidget extends EnumFieldHeadlessWidget {
   private render(h: CreateElement): VNode {
     return h(
       getControl('RadioGroup'),
-      { props: { value: this.internalValue }, on: { input: this.onChange } },
+      { props: { value: this.internalValue }, on: { change: this.onChange } },
       this.options.map(opt =>
         h(
           getControl('Radio'),
-          { props: { label: opt.value, value: opt.value, disabled: opt.disabled } },
+          { props: { value: opt.value, disabled: opt.disabled } },
           opt.hint
             ? [
                 opt.label,

@@ -8,24 +8,20 @@ import { StringFieldHeadlessWidget } from 'handie-vue/dist/widgets';
 @Component
 export default class InputEditStringFieldWidget extends StringFieldHeadlessWidget {
   private render(h: CreateElement): VNode {
-    const attrs: Record<string, any> = { placeholder: this.getPlaceholder() };
+    const props: Record<string, any> = { value: this.value, placeholder: this.getPlaceholder() };
 
     if (this.showValidationRulesAsNative) {
       const { min, max } = this.field as StringField;
 
       if (isNumber(min)) {
-        attrs.minlength = min;
+        props.minLength = min;
       }
 
       if (isNumber(max)) {
-        attrs.maxlength = max;
+        props.maxLength = max;
       }
     }
 
-    return h(getControl('Input'), {
-      props: { value: this.value },
-      attrs,
-      on: { input: this.onChange },
-    });
+    return h(getControl('TextInput'), { props, on: { input: this.onChange } });
   }
 }

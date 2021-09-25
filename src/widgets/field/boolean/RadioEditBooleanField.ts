@@ -9,19 +9,19 @@ export default class RadioEditBooleanFieldWidget extends BooleanFieldHeadlessWid
   private render(h: CreateElement): VNode {
     const positiveOption: VNode = h(
       getControl('Radio'),
-      { props: { label: true, value: true } },
+      { props: { value: true } },
       this.positiveLabel,
     );
 
     const negativeOption: VNode = h(
       getControl('Radio'),
-      { props: { label: false, value: false } },
+      { props: { value: false } },
       this.negativeLabel,
     );
 
     return h(
       getControl('RadioGroup'),
-      { props: { value: this.value }, on: { input: this.onChange } },
+      { props: { value: this.value }, on: { change: this.onChange } },
       this.negativeFirst ? [negativeOption, positiveOption] : [positiveOption, negativeOption],
     );
   }
