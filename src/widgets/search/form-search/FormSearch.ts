@@ -23,7 +23,7 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
     const formControlSize = this.getBehavior('formControlSize');
 
     const formChildren: VNode[] = this.filters.map(filter =>
-      h(getControl('FormItem'), { props: { label: filter.label } }, [
+      h(getControl('FormField'), { props: { label: filter.label } }, [
         h(getRenderer('FilterRenderer'), {
           props: { filter, value: this.condition[filter.name] },
           on: { change: this.setFilterValue },
@@ -88,10 +88,10 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
       getControl('Form'),
       {
         props: {
-          model: this.condition,
-          size: formControlSize,
-          inline: this.getBehavior('formLayout') === 'inline',
-          labelWidth: this.resolveLabelWidth(),
+          value: this.condition,
+          controlSize: formControlSize,
+          layout: this.getBehavior('formLayout'),
+          labelOption: { width: this.resolveLabelWidth() },
         },
       },
       formChildren,
