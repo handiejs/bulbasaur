@@ -1,7 +1,7 @@
 import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
-import { getControl } from 'handie-vue';
+import { getControl, createNode } from 'handie-vue';
 import { EnumFieldHeadlessWidget } from 'handie-vue/dist/widgets';
 
 @Component
@@ -18,7 +18,7 @@ export default class SelectEditEnumFieldWidget extends EnumFieldHeadlessWidget {
         on: { change: this.onChange },
       },
       this.options.map(opt =>
-        h(getControl('Option'), {
+        createNode(h, 'Option', {
           props: { label: opt.label, value: opt.value, disabled: opt.disabled },
         }),
       ),

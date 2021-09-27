@@ -1,7 +1,7 @@
 import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
-import { ListValue, getControl } from 'handie-vue';
+import { ListValue, getControl, createNode } from 'handie-vue';
 import { RelationFieldHeadlessWidget } from 'handie-vue/dist/widgets';
 
 @Component
@@ -16,7 +16,7 @@ export default class SelectEditM2mFieldWidget extends RelationFieldHeadlessWidge
         on: { change: this.onChange },
       },
       this.options.map(opt =>
-        h(getControl('Option'), {
+        createNode(h, 'Option', {
           props: { label: opt[this.labelKey], value: opt[this.valueKey] },
         }),
       ),

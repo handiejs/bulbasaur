@@ -1,7 +1,7 @@
 import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
-import { ListValue, isBoolean, getControl } from 'handie-vue';
+import { ListValue, isBoolean, getControl, createNode } from 'handie-vue';
 import { RelationFilterHeadlessWidget } from 'handie-vue/dist/widgets';
 
 @Component
@@ -10,7 +10,7 @@ export default class SelectEditM2mFilterWidget extends RelationFilterHeadlessWid
 
   private render(h: CreateElement): VNode {
     const children: VNode[] = this.options.map(opt =>
-      h(getControl('Option'), {
+      createNode(h, 'Option', {
         props: { label: opt[this.labelKey], value: opt[this.valueKey] },
       }),
     );
@@ -18,7 +18,7 @@ export default class SelectEditM2mFilterWidget extends RelationFilterHeadlessWid
     const multiple = isBoolean(this.config.multiple) ? this.config.multiple : true;
 
     children.unshift(
-      h(getControl('Option'), { props: { label: '全部', value: multiple ? [] : '' } }),
+      createNode(h, 'Option', { props: { label: '全部', value: multiple ? [] : '' } }),
     );
 
     return h(

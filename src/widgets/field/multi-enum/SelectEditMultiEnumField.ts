@@ -1,7 +1,7 @@
 import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
-import { getControl } from 'handie-vue';
+import { getControl, createNode } from 'handie-vue';
 import { MultiEnumFieldHeadlessWidget } from 'handie-vue/dist/widgets';
 
 @Component
@@ -18,7 +18,7 @@ export default class SelectEditMultiEnumFieldWidget extends MultiEnumFieldHeadle
         on: { change: this.onChange },
       },
       this.options.map(opt =>
-        h(getControl('Option'), {
+        createNode(h, 'Option', {
           props: { label: opt.label, value: opt.value, disabled: opt.disabled },
         }),
       ),

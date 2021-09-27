@@ -1,7 +1,7 @@
 import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
-import { getControl } from 'handie-vue';
+import { getControl, createNode } from 'handie-vue';
 import { MultiEnumFilterHeadlessWidget } from 'handie-vue/dist/widgets';
 
 @Component
@@ -14,7 +14,7 @@ export default class SelectEditMultiEnumFilterWidget extends MultiEnumFilterHead
         on: { change: this.onChange },
       },
       this.options.map(opt =>
-        h(getControl('Option'), { props: { label: opt.label, value: opt.value } }),
+        createNode(h, 'Option', { props: { label: opt.label, value: opt.value } }),
       ),
     );
   }
