@@ -8,7 +8,14 @@ import { ActionHeadlessWidget } from 'handie-vue/dist/widgets';
 export default class ButtonActionWidget extends ActionHeadlessWidget {
   private render(h: CreateElement): VNode {
     const { primary, danger } = this.action;
-    const props: Record<string, any> = { disabled: this.disabled };
+
+    const classNames: string[] = ['ActionWidget', 'ButtonActionWidget'];
+
+    if (this.config.className) {
+      classNames.push(this.config.className);
+    }
+
+    const props: Record<string, any> = { className: classNames.join(' '), disabled: this.disabled };
 
     if (primary) {
       props.color = 'primary';
@@ -18,15 +25,9 @@ export default class ButtonActionWidget extends ActionHeadlessWidget {
       props.color = 'danger';
     }
 
-    const classNames: string[] = ['ActionWidget', 'ButtonActionWidget'];
-
-    if (this.config.className) {
-      classNames.push(this.config.className);
-    }
-
     return h(
       getControl('Button'),
-      { class: classNames, props, on: { click: () => this.onExecute() } },
+      { props, on: { click: () => this.onExecute() } },
       this.resolveContent(),
     );
   }

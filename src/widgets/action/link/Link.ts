@@ -13,13 +13,13 @@ export default class LinkActionWidget extends ActionHeadlessWidget {
       classNames.push(this.config.className);
     }
 
+    const props = omit(this.config, ['showIcon', 'iconOnly', 'icon']);
+
+    props.className = classNames.join(' ');
+
     return h(
       getControl('Link'),
-      {
-        class: classNames,
-        props: omit(this.config, ['showIcon', 'iconOnly', 'icon']),
-        on: { click: () => this.onExecute() },
-      },
+      { props, on: { click: () => this.onExecute() } },
       this.resolveContent(),
     );
   }

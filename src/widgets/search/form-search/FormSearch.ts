@@ -31,7 +31,10 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
       ]),
     );
 
-    const buttonProps: Record<string, any> = { size: formControlSize };
+    const buttonProps: Record<string, any> = {
+      className: 'FormSearch-button',
+      size: formControlSize,
+    };
 
     if (this.getBehavior('submitButtonAsPrimary') === true) {
       buttonProps.color = 'primary';
@@ -41,7 +44,6 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
       h(
         getControl('Button'),
         {
-          staticClass: 'FormSearch-button',
           props: buttonProps,
           on: {
             click: evt => {
@@ -59,8 +61,7 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
         h(
           getControl('Button'),
           {
-            staticClass: 'FormSearch-button',
-            props: { size: formControlSize },
+            props: { className: 'FormSearch-button', size: formControlSize },
             on: {
               click: evt => {
                 this.reset();

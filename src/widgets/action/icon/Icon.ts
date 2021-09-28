@@ -30,10 +30,8 @@ export default class IconActionWidget extends ActionHeadlessWidget {
       classNames.push(className);
     }
 
-    return h(getControl('Icon'), {
-      class: classNames,
-      props,
-      on: { click: () => this.onExecute() },
-    });
+    props.className = classNames.join(' ');
+
+    return h(getControl('Icon'), { props, on: { click: () => this.onExecute() } });
   }
 }
