@@ -45,7 +45,6 @@
     "vue-property-decorator": "^8.0.0"
   },
   "dependencies": {
-    "element-ui": "^2.15.6",
     "kokiri": "0.0.2"
   },
   "devDependencies": {
