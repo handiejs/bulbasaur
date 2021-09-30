@@ -2,9 +2,9 @@
   "name": "@handie/bulbasaur",
   "version": "0.0.5",
   "description": "Widgets for Handie-Vue",
-  "main": "dist/index.ts",
-  "module": "dist/index.ts",
-  "typings": "dist/index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -44,9 +44,6 @@
     "vue": "^2.6.0",
     "vue-property-decorator": "^8.0.0"
   },
-  "dependencies": {
-    "kokiri": "0.0.2"
-  },
   "devDependencies": {
     "@ntks/eslint-config": "0.0.0",
     "@ntks/stylelint-config": "0.0.5",
@@ -57,6 +54,7 @@
     "fibers": "^5.0.0",
     "handie-vue": "0.0.39",
     "node-sass": "^5.0.0",
+    "petals-ui": "0.0.7",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.0",
     "sass": "^1.32.0",
