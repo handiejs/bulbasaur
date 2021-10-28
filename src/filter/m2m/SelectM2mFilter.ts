@@ -15,11 +15,19 @@ export default class SelectEditM2mFilterWidget extends RelationFilterHeadlessWid
       }),
     );
 
+    const showEmptyValueOption = this.getCommonBehavior('filter.showEmptyValueOption', false);
     const multiple = isBoolean(this.config.multiple) ? this.config.multiple : true;
 
-    children.unshift(
-      createNode(h, 'Option', { props: { label: '全部', value: multiple ? [] : '' } }),
-    );
+    if (showEmptyValueOption) {
+      children.unshift(
+        createNode(h, 'Option', {
+          props: {
+            label: this.getCommonBehavior('filter.emptyValueOptionLabel'),
+            value: multiple ? [] : '',
+          },
+        }),
+      );
+    }
 
     return h(
       getControl('Select'),
@@ -28,8 +36,17 @@ export default class SelectEditM2mFilterWidget extends RelationFilterHeadlessWid
           value: this.internalValue,
           placeholder: this.getPlaceholder(),
           multiple,
+          clearable: !showEmptyValueOption,
         },
-        on: { change: this.onChange },
+        on: {
+          change: value => {
+            if (value == null) {
+              this.onChange((multiple ? [] : '') as any);
+            } else {
+              this.onChange(value);
+            }
+          },
+        },
       },
       children,
     );

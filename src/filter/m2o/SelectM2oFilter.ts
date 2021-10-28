@@ -15,13 +15,25 @@ export default class SelectEditM2oFilterWidget extends RelationFilterHeadlessWid
       }),
     );
 
-    children.unshift(createNode(h, 'Option', { props: { label: '全部', value: '' } }));
+    const showEmptyValueOption = this.getCommonBehavior('filter.showEmptyValueOption', false);
+
+    if (showEmptyValueOption) {
+      children.unshift(
+        createNode(h, 'Option', {
+          props: { label: this.getCommonBehavior('filter.emptyValueOptionLabel'), value: '' },
+        }),
+      );
+    }
 
     return h(
       getControl('Select'),
       {
-        props: { value: this.internalValue, placeholder: this.getPlaceholder() },
-        on: { change: this.onChange },
+        props: {
+          value: this.internalValue,
+          placeholder: this.getPlaceholder(),
+          clearable: !showEmptyValueOption,
+        },
+        on: { change: value => this.onChange(value == null ? '' : value) },
       },
       children,
     );
