@@ -54,7 +54,7 @@
     "fibers": "^5.0.0",
     "handie-vue": "0.0.39",
     "node-sass": "^5.0.0",
-    "petals-ui": "0.0.7",
+    "petals-ui": "0.0.17",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.0",
     "sass": "^1.32.0",
