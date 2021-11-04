@@ -14,6 +14,14 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
     return isNumber(labelWidth) ? `${labelWidth}px` : labelWidth;
   }
 
+  private handleSearch(evt: any): void {
+    this.submit();
+
+    if (evt) {
+      evt.preventDefault();
+    }
+  }
+
   protected created(): void {
     this.setBehaviors('search.form', defaultBehaviors);
     this.initCondition();
@@ -31,10 +39,11 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
       ]),
     );
 
+    const standalone = this.getBehavior('actionsStandalone') === true;
     const buttonProps: Record<string, any> = {
       className: 'FormSearch-button',
       size: formControlSize,
-      nativeType: 'submit',
+      nativeType: standalone ? 'button' : 'submit',
     };
 
     if (this.getBehavior('submitButtonAsPrimary') === true) {
@@ -42,19 +51,7 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
     }
 
     const buttons: VNode[] = [
-      h(
-        getControl('Button'),
-        {
-          props: buttonProps,
-          on: {
-            click: evt => {
-              this.submit();
-              evt.preventDefault();
-            },
-          },
-        },
-        '查询',
-      ),
+      h(getControl('Button'), { props: buttonProps, on: { click: this.handleSearch } }, '查询'),
     ];
 
     if (this.getBehavior('resettable') === true) {
@@ -75,16 +72,26 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
       );
     }
 
-    const standalone = this.getBehavior('actionsStandalone') === true;
     const buttonGroup: VNode = h(
       'div',
       { staticClass: 'FormSearch-buttonGroup', class: { 'is-standalone': standalone } },
       buttons,
     );
 
-    if (!standalone) {
-      formChildren.push(buttonGroup);
-    }
+    formChildren.push(
+      standalone
+        ? h('div', { staticStyle: { display: 'none' } }, [
+            h(
+              getControl('Button'),
+              {
+                props: { nativeType: 'submit' },
+                on: { click: this.handleSearch },
+              },
+              '替身查询',
+            ),
+          ]) // for submission when the Enter key pressed
+        : buttonGroup,
+    );
 
     const form = h(
       getControl('Form'),
