@@ -34,6 +34,7 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
     const buttonProps: Record<string, any> = {
       className: 'FormSearch-button',
       size: formControlSize,
+      nativeType: 'submit',
     };
 
     if (this.getBehavior('submitButtonAsPrimary') === true) {
