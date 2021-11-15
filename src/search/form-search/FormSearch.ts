@@ -30,14 +30,22 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
   private render(h: CreateElement): VNode {
     const formControlSize = this.getBehavior('formControlSize');
 
-    const formChildren: VNode[] = this.filters.map(filter =>
-      h(getControl('FormField'), { props: { label: filter.label } }, [
-        h(getRenderer('FilterRenderer'), {
-          props: { filter, value: this.condition[filter.name] },
-          on: { change: this.setFilterValue },
-        }),
-      ]),
-    );
+    const formChildren: VNode[] = [];
+
+    this.filters.forEach(filter => {
+      if (filter.hidden) {
+        return;
+      }
+
+      formChildren.push(
+        h(getControl('FormField'), { props: { label: filter.label } }, [
+          h(getRenderer('FilterRenderer'), {
+            props: { filter, value: this.condition[filter.name] },
+            on: { change: this.setFilterValue },
+          }),
+        ]),
+      );
+    });
 
     const standalone = this.getBehavior('actionsStandalone') === true;
     const buttonProps: Record<string, any> = {
