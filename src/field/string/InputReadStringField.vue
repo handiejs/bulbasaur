@@ -1,5 +1,5 @@
 <template>
-  <span>{{ value }}</span>
+  <span>{{ formatValue() }}</span>
 </template>
 
 <script lang="ts" src="./logic.ts"></script>
