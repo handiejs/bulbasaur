@@ -10,6 +10,10 @@ export default class InputTextFilterWidget extends TextFilterHeadlessWidget {
   private render(h: CreateElement): VNode {
     const props: Record<string, any> = { value: this.value, placeholder: this.getPlaceholder() };
 
+    if (this.config.className) {
+      props.className = this.config.className;
+    }
+
     if (this.showValidationRulesAsNative) {
       const { min, max } = this.filter as StringField;
 

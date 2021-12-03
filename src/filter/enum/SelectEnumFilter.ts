@@ -21,18 +21,19 @@ export default class SelectEditEnumFilterWidget extends EnumFilterHeadlessWidget
       );
     }
 
+    const props: Record<string, any> = {
+      value: this.internalValue,
+      placeholder: this.getPlaceholder(),
+      clearable: !showEmptyValueOption,
+    };
+
+    if (this.config.className) {
+      props.className = this.config.className;
+    }
+
     return h(
       getControl('Select'),
-      {
-        props: {
-          value: this.internalValue,
-          placeholder: this.getPlaceholder(),
-          clearable: !showEmptyValueOption,
-        },
-        on: {
-          change: value => this.onChange(value == null ? '' : value),
-        },
-      },
+      { props, on: { change: value => this.onChange(value == null ? '' : value) } },
       children,
     );
   }
