@@ -1,7 +1,7 @@
 import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
-import { isNumber, getControl, getRenderer } from 'handie-vue';
+import { isBoolean, isNumber, getControl, getRenderer } from 'handie-vue';
 import { SearchHeadlessWidget } from 'handie-vue/dist/widgets';
 
 import defaultBehaviors from './behavior';
@@ -9,9 +9,22 @@ import defaultBehaviors from './behavior';
 @Component
 export default class FormSearchWidget extends SearchHeadlessWidget {
   private resolveLabelWidth(): string {
-    const labelWidth = this.getBehavior('formControlLabelWidth');
+    const labelWidth =
+      this.config.formControlLabelWidth || this.getBehavior('formControlLabelWidth');
 
     return isNumber(labelWidth) ? `${labelWidth}px` : labelWidth;
+  }
+
+  private resolveSearchable(): boolean {
+    return isBoolean(this.config.searchable)
+      ? this.config.searchable
+      : this.getBehavior('searchable') !== false;
+  }
+
+  private resolveResettable(): boolean {
+    return isBoolean(this.config.resettable)
+      ? this.config.resettable
+      : this.getBehavior('resettable') === true;
   }
 
   private handleSearch(evt: any): void {
@@ -30,7 +43,7 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
   private render(h: CreateElement): VNode {
     const formControlSize = this.getBehavior('formControlSize');
 
-    const formChildren: VNode[] = [];
+    const formChildren: (VNode | null)[] = [];
 
     this.filters.forEach(filter => {
       if (filter.hidden) {
@@ -48,6 +61,7 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
     });
 
     const standalone = this.getBehavior('actionsStandalone') === true;
+    const searchable = this.resolveSearchable();
     const buttonProps: Record<string, any> = {
       className: 'FormSearch-button',
       size: formControlSize,
@@ -58,11 +72,15 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
       buttonProps.color = 'primary';
     }
 
-    const buttons: VNode[] = [
-      h(getControl('Button'), { props: buttonProps, on: { click: this.handleSearch } }, '查询'),
-    ];
+    const buttons: VNode[] = [];
 
-    if (this.getBehavior('resettable') === true) {
+    if (searchable) {
+      buttons.push(
+        h(getControl('Button'), { props: buttonProps, on: { click: this.handleSearch } }, '查询'),
+      );
+    }
+
+    if (this.resolveResettable()) {
       buttons.push(
         h(
           getControl('Button'),
@@ -80,26 +98,34 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
       );
     }
 
-    const buttonGroup: VNode = h(
-      'div',
-      { staticClass: 'FormSearch-buttonGroup', class: { 'is-standalone': standalone } },
-      buttons,
-    );
+    const buttonGroup: VNode | null =
+      buttons.length > 0
+        ? h(
+            'div',
+            { staticClass: 'FormSearch-buttonGroup', class: { 'is-standalone': standalone } },
+            buttons,
+          )
+        : null;
 
-    formChildren.push(
-      standalone
-        ? h('div', { staticStyle: { display: 'none' } }, [
-            h(
-              getControl('Button'),
-              {
-                props: { nativeType: 'submit' },
-                on: { click: this.handleSearch },
-              },
-              '替身查询',
-            ),
-          ]) // for submission when the Enter key pressed
-        : buttonGroup,
-    );
+    if (standalone || !searchable) {
+      // for submission when the Enter key pressed
+      formChildren.push(
+        h('div', { staticStyle: { display: 'none' } }, [
+          h(
+            getControl('Button'),
+            {
+              props: { nativeType: 'submit' },
+              on: { click: this.handleSearch },
+            },
+            '替身查询',
+          ),
+        ]),
+      );
+    }
+
+    if (!standalone) {
+      formChildren.push(buttonGroup);
+    }
 
     const form = h(
       getControl('Form'),
