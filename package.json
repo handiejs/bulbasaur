@@ -52,7 +52,7 @@
     "@vue/cli-service": "^4.5.9",
     "eslint": "^7.21.0",
     "fibers": "^5.0.0",
-    "handie-vue": "0.0.45",
+    "handie-vue": "0.0.48",
     "node-sass": "^5.0.0",
     "petals-ui": "0.0.17",
     "prettier": "^2.2.1",

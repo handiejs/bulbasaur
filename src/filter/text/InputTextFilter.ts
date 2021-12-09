@@ -2,7 +2,7 @@ import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
 import { isNumber, getControl } from 'handie-vue';
-import { StringField } from 'handie-vue/dist/vendors/handie/types/input';
+import { StringField } from '@handie/runtime-core/dist/types/input';
 import { TextFilterHeadlessWidget } from 'handie-vue/dist/widgets';
 
 @Component
