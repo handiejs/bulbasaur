@@ -1,7 +1,14 @@
 import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
-import { isBoolean, isNumber, getControl, getRenderer } from 'handie-vue';
+import {
+  FilterDescriptor,
+  isBoolean,
+  isNumber,
+  isNumeric,
+  getControl,
+  getRenderer,
+} from 'handie-vue';
 import { SearchHeadlessWidget } from 'handie-vue/dist/widgets';
 
 import defaultBehaviors from './behavior';
@@ -35,31 +42,65 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
     }
   }
 
-  protected created(): void {
-    this.setBehaviors('search.form', defaultBehaviors);
-    this.initCondition();
+  private renderFilter(h: CreateElement, filter: FilterDescriptor): VNode {
+    return h(getControl('FormField'), { props: { label: filter.label } }, [
+      h(getRenderer('FilterRenderer'), {
+        props: { filter, value: this.condition[filter.name] },
+        on: { change: this.setFilterValue },
+      }),
+    ]);
+  }
+
+  private renderFilterRow(h: CreateElement, filters: FilterDescriptor[]): VNode {
+    return h(
+      'div',
+      { staticClass: 'FormSearch-filterRow' },
+      filters.map(filter => this.renderFilter(h, filter)),
+    );
+  }
+
+  private renderFilters(h: CreateElement): VNode[] {
+    const filterNodes: VNode[] = [];
+    const rows = (this.config.arrangement || '').split('|') as any[];
+
+    let needLayout = false;
+
+    if (rows.length > 0) {
+      const availableRows: number[] = [];
+
+      rows.forEach(row => {
+        if (isNumeric(row) && Number(row) > 0) {
+          availableRows.push(row);
+        }
+      });
+
+      needLayout = availableRows.length === rows.length;
+    }
+
+    if (needLayout) {
+      const remainedFilters = this.filters.filter(({ hidden }) => hidden !== true);
+
+      do {
+        filterNodes.push(this.renderFilterRow(h, remainedFilters.splice(0, rows.shift() * 1)));
+      } while (remainedFilters.length > 0 && rows.length > 0);
+
+      if (remainedFilters.length > 0) {
+        filterNodes.push(this.renderFilterRow(h, remainedFilters));
+      }
+    } else {
+      this.filters.forEach(filter => {
+        if (!filter.hidden) {
+          filterNodes.push(this.renderFilter(h, filter));
+        }
+      });
+    }
+
+    return filterNodes;
   }
 
   private render(h: CreateElement): VNode {
     const formControlSize = this.getBehavior('formControlSize');
-
-    const formChildren: (VNode | null)[] = [];
-
-    this.filters.forEach(filter => {
-      if (filter.hidden) {
-        return;
-      }
-
-      formChildren.push(
-        h(getControl('FormField'), { props: { label: filter.label } }, [
-          h(getRenderer('FilterRenderer'), {
-            props: { filter, value: this.condition[filter.name] },
-            on: { change: this.setFilterValue },
-          }),
-        ]),
-      );
-    });
-
+    const formChildren: (VNode | null)[] = this.renderFilters(h);
     const standalone = this.getBehavior('actionsStandalone') === true;
     const searchable = this.resolveSearchable();
     const buttonProps: Record<string, any> = {
@@ -141,5 +182,10 @@ export default class FormSearchWidget extends SearchHeadlessWidget {
     );
 
     return h('div', { staticClass: 'FormSearch' }, standalone ? [form, buttonGroup] : [form]);
+  }
+
+  protected created(): void {
+    this.setBehaviors('search.form', defaultBehaviors);
+    this.initCondition();
   }
 }
