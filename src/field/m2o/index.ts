@@ -1,2 +1,2 @@
-export { default as SelectEditM2oFieldWidget } from './SelectEditM2oField';
-export { default as SelectReadM2oFieldWidget } from './SelectReadM2oField.vue';
+export { default as SelectEditM2oFieldWidget } from './select-edit-m2o-field';
+export { default as SelectReadM2oFieldWidget } from './select-read-m2o-field';

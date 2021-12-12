@@ -1,1 +1,1 @@
-export { default as SelectM2mFilterWidget } from './SelectM2mFilter';
+export { default as SelectM2mFilterWidget } from './select-m2m-filter';

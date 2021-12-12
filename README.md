@@ -22,9 +22,9 @@
 
 ### 动作部件
 
-- [按钮动作部件](src/action/button)
-- [链接动作部件](src/action/link)
-- [图标动作部件](src/action/icon)
+- [按钮动作部件](src/action/button-action)
+- [链接动作部件](src/action/link-action)
+- [图标动作部件](src/action/icon-action)
 
 ### 搜索部件
 

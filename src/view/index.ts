@@ -1,3 +1,3 @@
-export { default as TableViewWidget } from './table';
-export { default as FormViewWidget } from './form';
-export { default as DetailViewWidget } from './detail';
+export { default as TableViewWidget } from './table-view';
+export { default as FormViewWidget } from './form-view';
+export { default as DetailViewWidget } from './detail-view';

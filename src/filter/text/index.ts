@@ -1,1 +1,1 @@
-export { default as InputTextFilterWidget } from './InputTextFilter';
+export { default as InputTextFilterWidget } from './input-text-filter';

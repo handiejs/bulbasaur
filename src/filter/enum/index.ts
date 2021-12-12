@@ -1,1 +1,1 @@
-export { default as SelectEnumFilterWidget } from './SelectEnumFilter';
+export { default as SelectEnumFilterWidget } from './select-enum-filter';
