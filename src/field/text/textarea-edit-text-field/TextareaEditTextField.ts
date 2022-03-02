@@ -36,7 +36,7 @@ export default class TextareaEditTextFieldWidget extends TextFieldHeadlessWidget
 
       if (isNumber(max)) {
         props.maxLength = max;
-        props.wordage = showWordLimit;
+        props.showWordage = showWordLimit;
       }
     }
 
