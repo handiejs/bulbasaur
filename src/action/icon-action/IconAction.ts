@@ -1,22 +1,13 @@
-import { CreateElement, VNode } from 'vue';
+import { VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
-import { omit, getControl } from 'handie-vue';
-import { ActionHeadlessWidget } from 'handie-vue/dist/widgets';
+import { IconActionStructuralWidget } from 'handie-vue/dist/widgets';
 
 @Component
-export default class IconActionWidget extends ActionHeadlessWidget {
-  private render(h: CreateElement): VNode {
-    const props = omit(this.config, ['showIcon', 'iconOnly', 'icon', 'refs']);
-    const classNames: string[] = ['ActionWidget', 'IconActionWidget'];
-
-    const { icon, className } = this.config;
-
-    if (icon) {
-      props.refs = icon;
-    }
-
+export default class IconActionWidget extends IconActionStructuralWidget {
+  public render(): VNode {
     const { primary, danger } = this.action;
+    const classNames: string[] = ['IconActionWidget'];
 
     if (primary) {
       classNames.push('IconActionWidget--primary');
@@ -26,12 +17,9 @@ export default class IconActionWidget extends ActionHeadlessWidget {
       classNames.push('IconActionWidget--danger');
     }
 
-    if (className) {
-      classNames.push(className);
-    }
-
-    props.className = classNames.join(' ');
-
-    return h(getControl('Icon'), { props, on: { click: () => this.onExecute() } });
+    return this.renderIcon({
+      className: this.resolveClassNames(classNames.join(' ')),
+      click: () => this.onExecute(),
+    });
   }
 }
