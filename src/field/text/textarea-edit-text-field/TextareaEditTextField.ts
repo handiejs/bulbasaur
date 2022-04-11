@@ -1,19 +1,23 @@
 import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
-import { isNumber, getControl } from 'handie-vue';
 import { StringField } from '@handie/runtime-core/dist/types/input';
-import { TextFieldHeadlessWidget } from 'handie-vue/dist/widgets';
+import { TextFieldWidgetState, isNumber, getControl } from 'handie-vue';
+import { TextFieldStructuralWidget } from 'handie-vue/dist/widgets';
 
+import { TextareaTextFieldWidgetConfig } from './typing';
 import defaultBehaviors from './behavior';
 
 @Component
-export default class TextareaEditTextFieldWidget extends TextFieldHeadlessWidget {
-  protected created(): void {
+export default class TextareaEditTextFieldWidget extends TextFieldStructuralWidget<
+  TextFieldWidgetState,
+  TextareaTextFieldWidgetConfig
+> {
+  public created(): void {
     this.setBehaviors('field.textarea', defaultBehaviors);
   }
 
-  private render(h: CreateElement): VNode {
+  public render(h: CreateElement): VNode {
     let showWordLimit = this.config.showWordLimit;
 
     if (showWordLimit === undefined) {
@@ -25,6 +29,7 @@ export default class TextareaEditTextFieldWidget extends TextFieldHeadlessWidget
       placeholder: this.getPlaceholder(),
       rows: this.config.rows || this.getBehavior('rows'),
       resize: 'none',
+      disabled: this.disabled,
     };
 
     if (this.showValidationRulesAsNative) {

@@ -1,6 +1,13 @@
+import { FieldWidgetConfig } from '@handie/runtime-core';
+
 interface TextareaTextFieldWidgetBehaviors {
   showWordLimit?: boolean;
   rows?: number;
 }
 
-export { TextareaTextFieldWidgetBehaviors };
+interface TextareaTextFieldWidgetConfig extends FieldWidgetConfig {
+  readonly showWordLimit?: boolean;
+  readonly rows?: number;
+}
+
+export { TextareaTextFieldWidgetBehaviors, TextareaTextFieldWidgetConfig };

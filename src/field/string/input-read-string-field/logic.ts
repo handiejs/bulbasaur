@@ -1,5 +1,5 @@
 import { Component } from 'vue-property-decorator';
-import { StringFieldHeadlessWidget } from 'handie-vue/dist/widgets';
+import { StringFieldStructuralWidget } from 'handie-vue/dist/widgets';
 
 @Component
-export default class InputReadStringFieldWidget extends StringFieldHeadlessWidget {}
+export default class InputReadStringFieldWidget extends StringFieldStructuralWidget {}

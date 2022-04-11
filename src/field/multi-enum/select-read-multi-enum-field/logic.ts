@@ -1,5 +1,5 @@
 import { Component } from 'vue-property-decorator';
-import { MultiEnumFieldHeadlessWidget } from 'handie-vue/dist/widgets';
+import { MultiEnumFieldStructuralWidget } from 'handie-vue/dist/widgets';
 
 @Component
-export default class SelectReadMultiEnumFieldWidget extends MultiEnumFieldHeadlessWidget {}
+export default class SelectReadMultiEnumFieldWidget extends MultiEnumFieldStructuralWidget {}

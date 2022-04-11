@@ -2,11 +2,11 @@ import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
 import { getControl } from 'handie-vue';
-import { BooleanFieldHeadlessWidget } from 'handie-vue/dist/widgets';
+import { BooleanFieldStructuralWidget } from 'handie-vue/dist/widgets';
 
 @Component
-export default class RadioEditBooleanFieldWidget extends BooleanFieldHeadlessWidget {
-  private render(h: CreateElement): VNode {
+export default class RadioEditBooleanFieldWidget extends BooleanFieldStructuralWidget {
+  public render(h: CreateElement): VNode {
     const positiveOption: VNode = h(
       getControl('Radio'),
       { props: { value: true } },
@@ -21,7 +21,7 @@ export default class RadioEditBooleanFieldWidget extends BooleanFieldHeadlessWid
 
     return h(
       getControl('RadioGroup'),
-      { props: { value: this.value }, on: { change: this.onChange } },
+      { props: { value: this.value, disabled: this.disabled }, on: { change: this.onChange } },
       this.negativeFirst ? [negativeOption, positiveOption] : [positiveOption, negativeOption],
     );
   }

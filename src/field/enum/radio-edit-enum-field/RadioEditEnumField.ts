@@ -1,19 +1,27 @@
 import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
-import { getControl } from 'handie-vue';
-import { EnumFieldHeadlessWidget } from 'handie-vue/dist/widgets';
+import { EnumFieldWidgetState, getControl } from 'handie-vue';
+import { EnumFieldStructuralWidget } from 'handie-vue/dist/widgets';
+
+import { RadioEnumFieldWidgetConfig } from './typing';
 
 @Component
-export default class RadioEditEnumFieldWidget extends EnumFieldHeadlessWidget {
-  private render(h: CreateElement): VNode {
+export default class RadioEditEnumFieldWidget extends EnumFieldStructuralWidget<
+  EnumFieldWidgetState,
+  RadioEnumFieldWidgetConfig
+> {
+  public render(h: CreateElement): VNode {
     return h(
       getControl('RadioGroup'),
-      { props: { value: this.internalValue }, on: { change: this.onChange } },
+      { props: { value: this.value, disabled: this.disabled }, on: { change: this.onChange } },
       this.options.map(opt =>
         h(
           getControl('Radio'),
-          { props: { value: opt.value, disabled: opt.disabled } },
+          {
+            props: { value: opt.value, disabled: opt.disabled },
+            key: `Option${opt.value}OfRadioEditEnumFieldWidget`,
+          },
           opt.hint
             ? [
                 opt.label,
