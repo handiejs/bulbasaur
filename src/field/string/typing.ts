@@ -6,4 +6,9 @@ interface InputStringFieldWidgetConfig extends StringFieldWidgetConfig {
   readonly suffix?: FormControlPrefixAndSuffix | string;
 }
 
-export { InputStringFieldWidgetConfig };
+interface UrlStringFieldWidgetConfig extends StringFieldWidgetConfig {
+  readonly scheme?: string | string[];
+  readonly noAuthority?: boolean;
+}
+
+export { InputStringFieldWidgetConfig, UrlStringFieldWidgetConfig };
