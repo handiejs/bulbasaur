@@ -3,11 +3,11 @@ import { Component } from 'vue-property-decorator';
 
 import { isNumber, getControl } from 'handie-vue';
 import { StringField } from '@handie/runtime-core/dist/types/input';
-import { StringFilterHeadlessWidget } from 'handie-vue/dist/widgets';
+import { StringFilterStructuralWidget } from 'handie-vue/dist/widgets';
 
 @Component
-export default class InputStringFilterWidget extends StringFilterHeadlessWidget {
-  private render(h: CreateElement): VNode {
+export default class InputStringFilterWidget extends StringFilterStructuralWidget {
+  public render(h: CreateElement): VNode {
     const props: Record<string, any> = { value: this.value, placeholder: this.getPlaceholder() };
 
     if (this.config.className) {

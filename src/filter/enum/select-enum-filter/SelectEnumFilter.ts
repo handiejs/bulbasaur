@@ -1,14 +1,25 @@
 import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
-import { getControl, createNode } from 'handie-vue';
-import { EnumFilterHeadlessWidget } from 'handie-vue/dist/widgets';
+import { isNumber, getControl, createNode } from 'handie-vue';
+import { EnumFilterStructuralWidget } from 'handie-vue/dist/widgets';
 
 @Component
-export default class SelectEditEnumFilterWidget extends EnumFilterHeadlessWidget {
-  private render(h: CreateElement): VNode {
+export default class SelectEditEnumFilterWidget extends EnumFilterStructuralWidget {
+  private handleOptionChange(value: number | string): void {
+    this.onChange(value == null ? '' : value);
+
+    if (this.searchImmediately) {
+      this.$$view.reload();
+    }
+  }
+
+  public render(h: CreateElement): VNode {
     const children: VNode[] = this.options.map(opt =>
-      createNode(h, 'Option', { props: { label: opt.label, value: opt.value } }),
+      createNode(h, 'Option', {
+        props: { label: opt.label, value: opt.value },
+        key: `Option${opt.value}OfSelectEditEnumFilterWidget`,
+      }),
     );
 
     const showEmptyValueOption = this.getCommonBehavior('filter.showEmptyValueOption', false);
@@ -17,24 +28,27 @@ export default class SelectEditEnumFilterWidget extends EnumFilterHeadlessWidget
       children.unshift(
         createNode(h, 'Option', {
           props: { label: this.getCommonBehavior('filter.emptyValueOptionLabel'), value: '' },
+          key: 'OptionAllOfSelectEditEnumFilterWidget',
         }),
       );
     }
 
     const props: Record<string, any> = {
-      value: this.internalValue,
+      value: this.value,
       placeholder: this.getPlaceholder(),
       clearable: !showEmptyValueOption,
     };
 
-    if (this.config.className) {
-      props.className = this.config.className;
+    const { className, width } = this.config;
+
+    if (className) {
+      props.className = className;
     }
 
-    return h(
-      getControl('Select'),
-      { props, on: { change: value => this.onChange(value == null ? '' : value) } },
-      children,
-    );
+    if (width) {
+      props.style = { width: isNumber(width) ? `${width}px` : width };
+    }
+
+    return h(getControl('Select'), { props, on: { change: this.handleOptionChange } }, children);
   }
 }

@@ -1,25 +1,39 @@
 import { CreateElement, VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 
-import { getControl, createNode } from 'handie-vue';
-import { MultiEnumFilterHeadlessWidget } from 'handie-vue/dist/widgets';
+import { isNumber, getControl, createNode } from 'handie-vue';
+import { MultiEnumFilterStructuralWidget } from 'handie-vue/dist/widgets';
 
 @Component
-export default class SelectEditMultiEnumFilterWidget extends MultiEnumFilterHeadlessWidget {
-  private render(h: CreateElement): VNode {
+export default class SelectEditMultiEnumFilterWidget extends MultiEnumFilterStructuralWidget {
+  private handleOptionChange(value: number[] | string[]): void {
+    this.onChange(value);
+
+    if (this.searchImmediately) {
+      this.$$view.reload();
+    }
+  }
+
+  public render(h: CreateElement): VNode {
     const props: Record<string, any> = {
-      value: this.internalValue,
+      value: this.value,
       placeholder: this.getPlaceholder(),
       multiple: true,
     };
 
-    if (this.config.className) {
-      props.className = this.config.className;
+    const { className, width } = this.config;
+
+    if (className) {
+      props.className = className;
+    }
+
+    if (width) {
+      props.style = { width: isNumber(width) ? `${width}px` : width };
     }
 
     return h(
       getControl('Select'),
-      { props, on: { change: this.onChange } },
+      { props, on: { change: this.handleOptionChange } },
       this.options.map(opt =>
         createNode(h, 'Option', { props: { label: opt.label, value: opt.value } }),
       ),
